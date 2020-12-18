@@ -8,6 +8,7 @@ window.addEventListener("load", () => {
   const countDownNumber = document.getElementById("count-down-number");
   const scoreBoard = document.getElementById("score-board");
   const scoreBoardBack = document.getElementById("score-board-back");
+  
   const timer = new Timer(timerBar, timerText, timeSelect, countDown, countDownBack, countDownNumber, scoreBoard, scoreBoardBack);
 
   const alphabet = document.getElementById("alphabet");
@@ -19,10 +20,12 @@ window.addEventListener("load", () => {
   const failureScore = document.getElementById("failure-score");
   const completeScore = document.getElementById("complete-score");
   const percentageScore = document.getElementById("percentage-score");
+  const scoreTweetButton = document.getElementById("tweet-button");
 
   const typing = new Typing(alphabet, 
                             correct, failure, complete, percentage, 
-                            correctScore, failureScore, completeScore, percentageScore);
+                            correctScore, failureScore, completeScore, percentageScore,
+                            scoreTweetButton, timeSelect);
 
   document.addEventListener('keydown',event => {
     if (event.keyCode === 32) {
@@ -120,17 +123,14 @@ class Timer {
 class Typing {
   constructor(alphabet, 
               correct, failure, complete, percentage,
-              correctScore, failureScore, completeScore, percentageScore){
+              correctScore, failureScore, completeScore, percentageScore,
+              scoreTweetButton, timeSelect){
     this.goodSound = new Audio("good.mp3")
     this.badSound = new Audio("bad.mp3")
     this.completeSound = new Audio("complete.mp3")
     this.keys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-^\\!\"#$%&'()=~|@[;:],./`{+*}<>?_";
     this.strOriginal = "nanndakawakaranaikedo,zennbuumakuitteiteuresii!";
     this.str = "nanndakawakaranaikedo,zennbuumakuitteiteuresii!";
-    this.variation = ["nanndakawakaranaikedo,zennbuumakuitteiteuresii!",
-                      "nanndakawakaranaikedo,zennbuumakuitteiteureshii!",
-                      "nanndakawakaranaikedo,zenbuumakuitteiteuresii!",
-                    ]
     this.htmlStr = "";
     this.text = "";
     this.len = this.str.length;
@@ -150,7 +150,9 @@ class Typing {
     this.failureScore = failureScore;
     this.completeScore = completeScore;
     this.percentageScore = percentageScore;
-    
+    this.scoreTweetButton = scoreTweetButton;
+    this.timeSelect = timeSelect;
+
     this.refreshHtml(this.count);
   }
   
@@ -202,8 +204,6 @@ class Typing {
         this.refreshHtml(this.count);
         this.good();
       } else {
-        this.badSound.currentTime = 0;
-        this.badSound.play();
         this.bad()
       }
       if (this.count === this.len) {
@@ -211,27 +211,29 @@ class Typing {
         this.count = 0;
         this.refreshHtml(this.count);
         this.alphabet.innerHTML = this.htmlStr;
-        this.completeSound.currentTime = 0;
-        this.completeSound.play();
       }
     }
   }
 
   good() {
-    this.goodSound.currentTime = 0;
-    this.goodSound.play();
+    // this.goodSound.currentTime = 0;
+    // this.goodSound.play();
     this.correctCount += 1;
     this.correct.textContent = this.correctCount;
     this.correctScore.textContent = this.correctCount;
     this.percent();
   }
   bad() {
+    // this.badSound.currentTime = 0;
+    // this.badSound.play();
     this.failureCount += 1;
     this.failure.textContent = this.failureCount;
     this.failureScore.textContent = this.failureCount;
     this.percent();
   }
   comp() {
+    // this.completeSound.currentTime = 0;
+    // this.completeSound.play();
     this.completeCount += 1;
     this.complete.textContent = this.completeCount;
     this.completeScore.textContent = this.completeCount;
@@ -241,6 +243,7 @@ class Typing {
     let per = Math.round((this.correctCount / (this.correctCount + this.failureCount)) * 1000) / 10;
     this.percentage.textContent = per;
     this.percentageScore.textContent = per;
+    this.scoreTweetButton.href = "https://twitter.com/share?text=%23くるみタイピング瞑想%0aくるみタイピング瞑想実施結果%0a" + this.timeSelect.options[this.timeSelect.selectedIndex].text + "コース%20成功回数" + this.completeCount + "回%20正打率" + per + "％%0a&url=https://kurumimo22.github.io"
   }
 
   refreshHtml(num){
@@ -252,7 +255,7 @@ class Typing {
     }
     for(let i = 0; i < this.len; i++){
       if ( i < num){
-        this.htmlStr += `<span class="red">${this.str.charAt(i)}</span>`;
+        this.htmlStr += `<span class="green">${this.str.charAt(i)}</span>`;
       } else {
         this.htmlStr += `<span class="black">${this.str.charAt(i)}</span>`;
       }
