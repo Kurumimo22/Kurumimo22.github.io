@@ -160,11 +160,18 @@ header {
   border: 2px solid #ccc
 }
 
-.correct, .failure, .complete, .percentage {
+.correct, .failure, .complete, .complete-inside, .percentage {
   display: flex;
   margin: 20px 10px 0;
   font-size: 18px;
   font-weight: bold;
+}
+
+.complete-description {
+  font-size: 16px;
+  text-align: right;
+  /* text-align: left; */
+  margin: 5px 10px 0 0;
 }
 
 #correct, #failure, #complete, #percentage {
@@ -177,8 +184,7 @@ header {
   width: 120px;
   text-align: right;
   border-radius: 10px;
-
- }
+}
 
 .banner {
   padding: 10px;
