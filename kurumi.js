@@ -243,7 +243,7 @@ class Typing {
     let per = Math.round((this.correctCount / (this.correctCount + this.failureCount)) * 1000) / 10;
     this.percentage.textContent = per;
     this.percentageScore.textContent = per;
-    this.scoreTweetButton.href = "https://twitter.com/share?text=%23くるみタイピング瞑想%0aくるみタイピング瞑想実施結果%0a" + this.timeSelect.options[this.timeSelect.selectedIndex].text + "コース%20成功回数" + this.completeCount + "回%20正打率" + per + "％%0a&url=https://kurumimo22.github.io"
+    this.scoreTweetButton.href = "https://twitter.com/share?text=%23くるみタイピング瞑想%0a【実施結果】%0a" + this.timeSelect.options[this.timeSelect.selectedIndex].text + "コース%20成功回数" + this.completeCount + "回%20正打率" + per + "％%0a&url=https://kurumimo22.github.io"
   }
 
   refreshHtml(num){
